@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-3-hypermedia_del_pagination
+Deletion-resilient hypermedia pagination
 """
-
 
 import csv
 import math
@@ -41,27 +40,27 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """
-        Returns a dictionary with hypermedia pagination 
-        information based on the provided index.
-        """
-        assert isinstance(index, int) and index >= 0, 
-        assert isinstance(page_size, int) and page_size > 0,
+        """Returns a dictionary with hypermedia pagaination"""
 
-        dataset = self.indexed_dataset()
-        total_items = len(dataset)
+        assert isinstance(index, int) and index >= 0
+        assert isinstance(page_size, int) and page_size > 0
+
+        indexed_dataset = self.indexed_dataset()
+        total_items = len(indexed_dataset)
+        total_pages = math.ceil(total_items / page_size)
+
         start_index = index
-        next_index = index + page_size
+        end_index = min(start_index + page_size, total_items)
 
-        # Ensure the start_index is within a valid range
-        assert start_index < total_items, "Start index is out of range"
-
-        # Get the page data
-        data = [dataset[i] for i in range(start_index, min(next_index, total_items))]
-
+        data = [indexed_dataset[i] for i in range(start_index, end_index)]
+        next_index = end_index
+        prev_index = max(start_index - page_size, 0) \
+            if start_index > 0 else None
         return {
             'index': start_index,
-            'page_size': len(data),
             'data': data,
-            'next_index': next_index if next_index < total_items else None
+            'page_size': len(data),
+            'next_index': next_index,
+            'prev_index': prev_index,
+            'total_pages': total_pages,
         }
