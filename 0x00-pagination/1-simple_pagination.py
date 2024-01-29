@@ -1,19 +1,19 @@
 #!/usr/bin/env python3
-"""
-Implementation of the index_range function and the Server class with the get_page method
-"""
+"""Implementation of the index_range function and the Server class"""
 
 import csv
 from typing import List
 
+
 def index_range(page: int, page_size: int) -> tuple:
     """
     Returns a tuple of size two containing a start index and an end index
-    corresponding to the range of indexes to return in a list for pagination.
+    corresponding to the range of indexes to return in a list for pagination
     """
     start_index = (page - 1) * page_size
     end_index = page * page_size
     return start_index, end_index
+
 
 class Server:
     """Server class to paginate a database of popular baby names.
@@ -36,7 +36,8 @@ class Server:
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """
-        Returns the appropriate page of the dataset based on pagination parameters.
+        Returns the appropriate page of the dataset
+        based on pagination parameters.
         If the input arguments are out of range for the dataset,
         an empty list is returned.
         """
@@ -50,4 +51,3 @@ class Server:
             return []
 
         return dataset[start_index:end_index]
-
