@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """
-implementation of the index_range function and 
-the Server class with the get_page method
+Implementation of the index_range function and the Server class with the get_page method
 """
 
 import csv
 from typing import List
-
 
 def index_range(page: int, page_size: int) -> tuple:
     """
@@ -42,8 +40,8 @@ class Server:
         If the input arguments are out of range for the dataset,
         an empty list is returned.
         """
-        assert isinstance(page, int) and page > 0,
-        assert isinstance(page_size, int) and page_size > 0,
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
 
         start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
@@ -52,3 +50,4 @@ class Server:
             return []
 
         return dataset[start_index:end_index]
+
